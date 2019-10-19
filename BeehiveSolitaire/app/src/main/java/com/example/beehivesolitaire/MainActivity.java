@@ -3,18 +3,21 @@ package com.example.beehivesolitaire;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 import android.os.Bundle;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // Variables for determining deck size for easy future change
     int SetAmount = 13;
     int Colors = 4;
-    int[] Deck;
+    int[] DeckArray;
+    List Deck;
+    List Beehive;
+    List WorkingPile;
 
     // Fills the deck and then randomizes the deck
     public static int[] setDeck(int SetAmount, int Colors){
         // Needed variables for this code
-        Random rng = new Random();
         int[] Deck = new int[SetAmount*Colors];
         int index = 0;
 
@@ -25,8 +28,13 @@ public class MainActivity extends AppCompatActivity {
                 index++;
             }
         }
+        return Deck;
+    }
+    public static int[] randomizeDeck(int[] Deck){
+        // Needed variables for this code
+        Random rng = new Random();
 
-        // Rnadomizes the deck
+        // Randomizes the deck
         for( int DeckPlace = 0; DeckPlace < Deck.length; DeckPlace++ ){
             int NewDeckPlace = rng.nextInt(Deck.length);
             int temp = Deck[NewDeckPlace];
@@ -37,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
         return Deck;
     }
 
+    public static List IntArrayToList(int[] Input){
+        List Output = null;
+        for( int Index = 0; Index < Input.length; Index++){
+            Output.add(Input[Index]);
+        }
+        return Output;
+    }
+
+
     public void setBoard(){
 
     }
@@ -46,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Deck = setDeck(SetAmount, Colors);
-
+        DeckArray = setDeck(SetAmount, Colors);
+        DeckArray = randomizeDeck(DeckArray);
+        Deck = IntArrayToList(DeckArray);
 
     }
 
