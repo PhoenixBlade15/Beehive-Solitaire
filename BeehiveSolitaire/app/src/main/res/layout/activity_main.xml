@@ -6,77 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/Garden1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/Garden2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FG_Text" />
-
-    <Button
-        android:id="@+id/Garden2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/Garden3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Garden1"
-        app:layout_constraintTop_toBottomOf="@+id/FG_Text" />
-
-    <Button
-        android:id="@+id/Garden3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Button"
+    <ImageButton
+        android:id="@+id/WorkingPileButton"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Garden2"
-        app:layout_constraintTop_toBottomOf="@+id/FG_Text" />
+        app:layout_constraintStart_toEndOf="@+id/BeehiveButton"
+        app:layout_constraintTop_toBottomOf="@+id/WorkingPile_Text" />
 
-    <Button
-        android:id="@+id/Garden4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/Garden5"
+    <ImageButton
+        android:id="@+id/BeehiveButton"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/WorkingPileButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/DeckButton"
+        app:layout_constraintTop_toBottomOf="@+id/Beehive_Text" />
+
+    <ImageButton
+        android:id="@+id/DeckButton"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/cback_foreground"
+        app:layout_constraintEnd_toStartOf="@+id/BeehiveButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Garden1" />
-
-    <Button
-        android:id="@+id/Garden5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/Garden6"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Garden4"
-        app:layout_constraintTop_toBottomOf="@+id/Garden2" />
-
-    <Button
-        android:id="@+id/Garden6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Garden5"
-        app:layout_constraintTop_toBottomOf="@+id/Garden3" />
+        app:layout_constraintTop_toBottomOf="@+id/Deck_Text" />
 
     <TextView
         android:id="@+id/FG_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Flower Garden"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,27 +49,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/Beehive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginLeft="162dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginRight="161dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Beehive_Text" />
-
     <TextView
         android:id="@+id/Beehive_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:text="Beehive"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/WorkingPile_Text"
@@ -116,7 +67,7 @@
         android:id="@+id/WorkingPile_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:text="Working Pile"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
         android:layout_marginLeft="42dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:text="Pack"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/Beehive_Text"
@@ -138,32 +89,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Garden4" />
 
-    <Button
-        android:id="@+id/Deck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="278dp"
-        android:layout_marginRight="278dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageButton
+        android:id="@+id/Garden1"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/Garden2"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Deck_Text" />
+        app:layout_constraintTop_toBottomOf="@+id/FG_Text" />
 
-    <Button
-        android:id="@+id/WorkingPile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="286dp"
-        android:layout_marginLeft="286dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginRight="37dp"
-        android:text="Button"
+    <ImageButton
+        android:id="@+id/Garden6"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Garden5"
+        app:layout_constraintTop_toBottomOf="@+id/Garden3" />
+
+    <ImageButton
+        android:id="@+id/Garden5"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/Garden6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Garden4"
+        app:layout_constraintTop_toBottomOf="@+id/Garden2" />
+
+    <ImageButton
+        android:id="@+id/Garden4"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/Garden5"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WorkingPile_Text" />
+        app:layout_constraintTop_toBottomOf="@+id/Garden1" />
+
+    <ImageButton
+        android:id="@+id/Garden2"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/Garden3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Garden1"
+        app:layout_constraintTop_toBottomOf="@+id/FG_Text" />
+
+    <ImageButton
+        android:id="@+id/Garden3"
+        android:layout_width="109dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Garden2"
+        app:layout_constraintTop_toBottomOf="@+id/FG_Text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
