@@ -5,13 +5,22 @@ import java.util.Random;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     // Variables for determining deck size for easy future change
+    // ButtonOnePress: 0 == None, 1 == Beehive, 2 == Working Pile
+    int ButtonOnePress = 0;
+    // ButtonTwoPress: 0 == None, 1 == Garden1, 2 == Garden2, etc...
+    int ButtonTwoPress = 0;
     int SetAmount = 13;
     int Colors = 4;
     int[] DeckArray;
@@ -24,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> FlowerGarden4 = new ArrayList<>();
     ArrayList<Integer> FlowerGarden5 = new ArrayList<>();
     ArrayList<Integer> FlowerGarden6 = new ArrayList<>();
+    boolean GameLose = true;
+    boolean GameWin = false;
+    int CompletedSets = 0;
 
     // Fills the deck and then randomizes the deck
     public static int[] setDeck(int SetAmount, int Colors){
@@ -40,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return Deck;
     }
+
     public static int[] randomizeDeck(int[] Deck){
         // Needed variables for this code
         Random rng = new Random();
@@ -64,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         return Output;
     }
 
-
+    // Sets the beehive, pile counts, and garden
     public void setBoard(){
 
         // Fills in the beehive
@@ -74,18 +87,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Fills in the Flower Garden sections of the board
-        FlowerGarden1.add(Deck.get(0));
-        Deck.remove(0);
-        FlowerGarden2.add(Deck.get(0));
-        Deck.remove(0);
-        FlowerGarden3.add(Deck.get(0));
-        Deck.remove(0);
-        FlowerGarden4.add(Deck.get(0));
-        Deck.remove(0);
-        FlowerGarden5.add(Deck.get(0));
-        Deck.remove(0);
-        FlowerGarden6.add(Deck.get(0));
-        Deck.remove(0);
+        setGarden("Garden1");
+        setGarden("Garden2");
+        setGarden("Garden3");
+        setGarden("Garden4");
+        setGarden("Garden5");
+        setGarden("Garden6");
+
+        // Checks to make sure no sets in gardens
+        checkGarden();
+
+        // Sets the card display on all sections
         setCard("Beehive");
         setCard("WorkingPile");
         setCard("Garden1");
@@ -94,6 +106,287 @@ public class MainActivity extends AppCompatActivity {
         setCard("Garden4");
         setCard("Garden5");
         setCard("Garden6");
+
+        // Sets text telling how many cards in each pile
+        setText("Beehive");
+        setText("WorkingPile");
+        setText("Garden1");
+        setText("Garden2");
+        setText("Garden3");
+        setText("Garden4");
+        setText("Garden5");
+        setText("Garden6");
+        setText("Deck");
+    }
+
+    // Checks each garden to get rid of sets
+    public void checkGarden(){
+        // If any sets are in the flower garden get rid of them.
+        while( FlowerGarden1.get(0) %100 == FlowerGarden2.get(0) %100 || FlowerGarden1.get(0) %100 == FlowerGarden3.get(0) %100 || FlowerGarden1.get(0) %100 == FlowerGarden4.get(0) %100 || FlowerGarden1.get(0) %100 == FlowerGarden5.get(0) %100 || FlowerGarden1.get(0) %100 == FlowerGarden6.get(0) %100) {
+            if(FlowerGarden1.get(0) %100 == FlowerGarden2.get(0) %100 ){
+                FlowerGarden1.add(FlowerGarden2.get(0));
+                FlowerGarden2.remove(0);
+                setGarden("Garden2");
+            } else if(FlowerGarden1.get(0) %100 == FlowerGarden3.get(0) %100 ){
+                FlowerGarden1.add(FlowerGarden3.get(0));
+                FlowerGarden3.remove(0);
+                setGarden("Garden3");
+            } else if(FlowerGarden1.get(0) %100 == FlowerGarden4.get(0) %100 ){
+                FlowerGarden1.add(FlowerGarden4.get(0));
+                FlowerGarden4.remove(0);
+                setGarden("Garden4");
+            } else if(FlowerGarden1.get(0) %100 == FlowerGarden5.get(0) %100 ){
+                FlowerGarden1.add(FlowerGarden5.get(0));
+                FlowerGarden5.remove(0);
+                setGarden("Garden5");
+            } else if(FlowerGarden1.get(0) %100 == FlowerGarden6.get(0) %100 ){
+                FlowerGarden1.add(FlowerGarden6.get(0));
+                FlowerGarden6.remove(0);
+                setGarden("Garden6");
+            }
+        }
+
+        // If any sets are in the flower garden get rid of them.
+        while( FlowerGarden2.get(0) %100 == FlowerGarden3.get(0) %100 || FlowerGarden2.get(0) %100 == FlowerGarden4.get(0) %100 || FlowerGarden2.get(0) %100 == FlowerGarden5.get(0) %100 || FlowerGarden2.get(0) %100 == FlowerGarden6.get(0) %100){
+            if(FlowerGarden2.get(0) %100 == FlowerGarden3.get(0) %100 ){
+                FlowerGarden2.add(FlowerGarden3.get(0));
+                FlowerGarden3.remove(0);
+                setGarden("Garden3");
+            } else if(FlowerGarden2.get(0) %100 == FlowerGarden4.get(0) %100 ){
+                FlowerGarden2.add(FlowerGarden4.get(0));
+                FlowerGarden4.remove(0);
+                setGarden("Garden4");
+            } else if(FlowerGarden2.get(0) %100 == FlowerGarden5.get(0) %100 ){
+                FlowerGarden2.add(FlowerGarden5.get(0));
+                FlowerGarden5.remove(0);
+                setGarden("Garden5");
+            } else if(FlowerGarden2.get(0) %100 == FlowerGarden6.get(0) %100 ){
+                FlowerGarden2.add(FlowerGarden6.get(0));
+                FlowerGarden6.remove(0);
+                setGarden("Garden6");
+            }
+        }
+
+        // If any sets are in the flower garden get rid of them.
+        while( FlowerGarden3.get(0) %100 == FlowerGarden4.get(0) %100 || FlowerGarden3.get(0) %100 == FlowerGarden5.get(0) %100 || FlowerGarden3.get(0) %100 == FlowerGarden6.get(0) %100) {
+            if(FlowerGarden3.get(0) %100 == FlowerGarden4.get(0) %100 ){
+                FlowerGarden3.add(FlowerGarden4.get(0));
+                FlowerGarden4.remove(0);
+                setGarden("Garden4");
+            } else if(FlowerGarden3.get(0) %100 == FlowerGarden5.get(0) %100 ){
+                FlowerGarden3.add(FlowerGarden5.get(0));
+                FlowerGarden5.remove(0);
+                setGarden("Garden5");
+            } else if(FlowerGarden3.get(0) %100 == FlowerGarden6.get(0) %100 ){
+                FlowerGarden3.add(FlowerGarden6.get(0));
+                FlowerGarden6.remove(0);
+                setGarden("Garden6");
+            }
+        }
+
+        // If any sets are in the flower garden get rid of them.
+        while( FlowerGarden4.get(0) %100 == FlowerGarden5.get(0) %100 || FlowerGarden4.get(0) %100 == FlowerGarden6.get(0) %100) {
+            if(FlowerGarden4.get(0) %100 == FlowerGarden5.get(0)) {
+                FlowerGarden4.add(FlowerGarden5.get(0) %100);
+                FlowerGarden5.remove(0);
+                setGarden("Garden5");
+            } else if (FlowerGarden4.get(0) %100 == FlowerGarden6.get(0) %100) {
+                FlowerGarden4.add(FlowerGarden6.get(0));
+                FlowerGarden6.remove(0);
+                setGarden("Garden6");
+            }
+        }
+
+        // If any sets are in the flower garden get rid of them.
+        while( FlowerGarden5.get(0) %100 == FlowerGarden6.get(0) %100) {
+            if(FlowerGarden5.get(0) %100 == FlowerGarden6.get(0) %100) {
+                FlowerGarden5.add(FlowerGarden6.get(0));
+                FlowerGarden6.remove(0);
+                setGarden("Garden6");
+            }
+        }
+
+        // If garden 1 is a set of 4
+        if ( FlowerGarden1.toArray().length == 4 ){
+            CompletedSets++;
+            TextView CompletedSets = findViewById(R.id.CompletedSets);
+            CompletedSets.setText("Completed Sets: " + CompletedSets);
+            FlowerGarden1.clear();
+            setGarden("Garden1");
+            checkGarden();
+        }
+
+        // If garden 2 is a set of 4
+        if ( FlowerGarden2.toArray().length == 4 ){
+            CompletedSets++;
+            TextView CompletedSets = findViewById(R.id.CompletedSets);
+            CompletedSets.setText("Completed Sets: " + CompletedSets);
+            FlowerGarden2.clear();
+            setGarden("Garden2");
+            checkGarden();
+        }
+
+        // If garden 3 is a set of 4
+        if ( FlowerGarden3.toArray().length == 4 ){
+            CompletedSets++;
+            TextView CompletedSets = findViewById(R.id.CompletedSets);
+            CompletedSets.setText("Completed Sets: " + CompletedSets);
+            FlowerGarden3.clear();
+            setGarden("Garden3");
+            checkGarden();
+        }
+
+        // If garden 1 is a set of 4
+        if ( FlowerGarden4.toArray().length == 4 ){
+            CompletedSets++;
+            TextView CompletedSets = findViewById(R.id.CompletedSets);
+            CompletedSets.setText("Completed Sets: " + CompletedSets);
+            FlowerGarden4.clear();
+            setGarden("Garden4");
+            checkGarden();
+        }
+
+        // If garden 5 is a set of 4
+        if ( FlowerGarden5.toArray().length == 4 ){
+            CompletedSets++;
+            TextView CompletedSets = findViewById(R.id.CompletedSets);
+            CompletedSets.setText("Completed Sets: " + CompletedSets);
+            FlowerGarden5.clear();
+            setGarden("Garden5");
+            checkGarden();
+        }
+
+        // If garden 6 is a set of 4
+        if ( FlowerGarden6.toArray().length == 4 ){
+            CompletedSets++;
+            TextView CompletedSets = findViewById(R.id.CompletedSets);
+            CompletedSets.setText("Completed Sets: " + CompletedSets);
+            FlowerGarden6.clear();
+            setGarden("Garden6");
+            checkGarden();
+        }
+
+
+
+    }
+
+    // Sets the flower gardens
+    public void setGarden(String GardenName){
+
+        // Checks which garden is being set
+        if ( Deck.toArray().length > 0 ){
+            if (GardenName == "Garden1" ){
+                FlowerGarden1.add(Deck.get(0));
+                Deck.remove(0);
+                setText("Garden1");
+                setCard("Garden1");
+            } else if ( GardenName == "Garden2" ){
+                FlowerGarden2.add(Deck.get(0));
+                Deck.remove(0);
+                setText("Garden2");
+                setCard("Garden2");
+            } else if ( GardenName == "Garden3" ){
+                FlowerGarden3.add(Deck.get(0));
+                Deck.remove(0);
+                setText("Garden3");
+                setCard("Garden3");
+            } else if ( GardenName == "Garden4" ){
+                FlowerGarden4.add(Deck.get(0));
+                Deck.remove(0);
+                setText("Garden4");
+                setCard("Garden4");
+            } else if ( GardenName == "Garden5" ){
+                FlowerGarden5.add(Deck.get(0));
+                Deck.remove(0);
+                setText("Garden5");
+                setCard("Garden5");
+            } else if ( GardenName == "Garden6" ){
+                FlowerGarden6.add(Deck.get(0));
+                Deck.remove(0);
+                setText("Garden6");
+                setCard("Garden6");
+            }
+
+            setText("Deck");
+            setCard("Deck");
+        } else if ( WorkingPile.toArray().length > 0 ){
+            if (GardenName == "Garden1" ){
+                FlowerGarden1.add(WorkingPile.get(0));
+                WorkingPile.remove(0);
+                setText("Garden1");
+                setCard("Garden1");
+            } else if ( GardenName == "Garden2" ){
+                FlowerGarden2.add(WorkingPile.get(0));
+                WorkingPile.remove(0);
+                setText("Garden2");
+                setCard("Garden2");
+            } else if ( GardenName == "Garden3" ){
+                FlowerGarden3.add(WorkingPile.get(0));
+                WorkingPile.remove(0);
+                setText("Garden3");
+                setCard("Garden3");
+            } else if ( GardenName == "Garden4" ){
+                FlowerGarden4.add(WorkingPile.get(0));
+                WorkingPile.remove(0);
+                setText("Garden4");
+                setCard("Garden4");
+            } else if ( GardenName == "Garden5" ){
+                FlowerGarden5.add(WorkingPile.get(0));
+                WorkingPile.remove(0);
+                setText("Garden5");
+                setCard("Garden5");
+            } else if ( GardenName == "Garden6" ){
+                FlowerGarden6.add(WorkingPile.get(0));
+                WorkingPile.remove(0);
+                setText("Garden6");
+                setCard("Garden6");
+            }
+
+            setText("WorkingPile");
+            setCard("WorkingPile");
+        }
+    }
+
+    // Set the text of the incoming pile
+    public void setText(String ButtonName){
+
+        // Initializes Variables
+        int TextID = R.id.Garden1Text;
+        String Text = "Cards in Stack: ";
+
+        // Walks through each button name to see if it is a valid name passed in
+        if(ButtonName == "Garden1"){
+            TextID = R.id.Garden1Text;
+            Text = "Cards in Stack: " + FlowerGarden1.toArray().length;
+        } else if ( ButtonName == "Garden2"){
+            TextID = R.id.Garden2Text;
+            Text = "Cards in Stack: " + FlowerGarden2.toArray().length;
+        } else if ( ButtonName == "Garden3"){
+            TextID = R.id.Garden3Text;
+            Text = "Cards in Stack: " + FlowerGarden3.toArray().length;
+        } else if ( ButtonName == "Garden4"){
+            TextID = R.id.Garden4Text;
+            Text = "Cards in Stack: " + FlowerGarden4.toArray().length;
+        } else if ( ButtonName == "Garden5"){
+            TextID = R.id.Garden5Text;
+            Text = "Cards in Stack: " + FlowerGarden5.toArray().length;
+        } else if ( ButtonName == "Garden6"){
+            TextID = R.id.Garden6Text;
+            Text = "Cards in Stack: " + FlowerGarden6.toArray().length;
+        } else if ( ButtonName == "WorkingPile"){
+            TextID = R.id.WorkingPileText;
+            Text = "Cards in Stack: " + WorkingPile.toArray().length;
+        } else if ( ButtonName == "Beehive"){
+            TextID = R.id.BeehiveText;
+            Text = "Cards in Stack: " + Beehive.toArray().length;
+        } else if ( ButtonName == "Deck"){
+            TextID = R.id.DeckText;
+            Text = "Cards in Stack: " + Deck.toArray().length;
+        }
+
+        // Sets the text to the correct amount of cards in the stack
+        TextView TempText = findViewById(TextID);
+        TempText.setText(Text);
     }
 
     // Gets the card information set and then finds
@@ -101,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initializes Variables
         int ButtonID = R.id.Garden1;
-        int Image = R.drawable.c101_background;
+        int Image = R.mipmap.cback_foreground;
 
         // Walks through each button name to see if it is a valid name passed in
         if(ButtonName == "Garden1"){
@@ -139,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
     public int getImageID(String ButtonName){
 
         // Initializes Variables
-        int ImageNeeded = 101;
+        int ImageNeeded = 1;
 
         if(ButtonName == "Garden1"){
             ImageNeeded = FlowerGarden1.get(FlowerGarden1.toArray().length-1);
@@ -155,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
             ImageNeeded = FlowerGarden6.get(FlowerGarden6.toArray().length-1);
         } else if ( ButtonName == "WorkingPile" && WorkingPile.toArray().length > 0){
             ImageNeeded = WorkingPile.get(WorkingPile.toArray().length-1);
-        } else if ( ButtonName == "Beehive"){
+        } else if ( ButtonName == "Beehive" && Beehive.toArray().length > 0){
             ImageNeeded = Beehive.get(Beehive.toArray().length-1);
         }
 
@@ -273,10 +566,428 @@ public class MainActivity extends AppCompatActivity {
                 return R.mipmap.c412_foreground;
             case 413:
                 return R.mipmap.c413_foreground;
+            case 1:
+                return R.mipmap.cback_foreground;
             default:
-                return R.mipmap.c101_foreground;
+                return R.mipmap.cback_foreground;
         }
     }
+
+    // When Player taps the deck
+    public void pullDeck(){
+
+        // If the pile is not empty draw
+        if(Deck.toArray().length != 0 ){
+            // Checks if deck has 3 cards to draw to working pile if not draws remaining
+            int StoppingPoint = Math.min(3, Deck.toArray().length);
+            for(int index = 0; index < StoppingPoint; index++ ){
+                WorkingPile.add(Deck.get(0));
+                Deck.remove(0);
+            }
+        } else {
+
+            // If the player has not been able to use any card from the deck
+            if ( GameLose == true ){
+                GameOver();
+            }
+
+            // If the deck is empty put the working pile back into the deck
+            Deck.addAll(WorkingPile);
+            WorkingPile.clear();
+            GameLose = true;
+        }
+        setCard("WorkingPile");
+        setText("Deck");
+        setText("WorkingPile");
+    }
+
+    // If they lose the game
+    public void GameOver(){
+        TextView FlowerGarden = findViewById(R.id.FG_Text);
+        FlowerGarden.setText("You Lose!");
+    }
+
+    // If they win the game
+    public void GameWin(){
+        TextView FlowerGarden = findViewById(R.id.FG_Text);
+        FlowerGarden.setText("You Win!");
+    }
+
+    // Check if Game is won
+    public void isWin(){
+        if ( CompletedSets >= SetAmount ){
+            GameWin();
+        }
+    }
+
+    // Sets the selected identifier
+    public void setSelected(String ButtonPressed){
+
+        // If beehive was tapped
+        if ( ButtonPressed == "Beehive" ){
+            TextView BeehiveSelected = findViewById(R.id.BeehiveSelected);
+
+            // If no piles were selected
+            if ( ButtonOnePress == 0 ){
+                ButtonOnePress = 1;
+                BeehiveSelected.setText("Selected");
+
+                // If unselecting beehive
+            } else if ( ButtonOnePress == 1 ){
+                ButtonOnePress = 0;
+                BeehiveSelected.setText("");
+
+                // If working pile was already selected
+            } else if ( ButtonOnePress == 2){
+                ButtonOnePress = 1;
+                BeehiveSelected.setText("Selected");
+                TextView WorkingPileSelected = findViewById(R.id.WorkingPileSelected);
+                WorkingPileSelected.setText("");
+            }
+            // If the working pile was tapped
+        } else if ( ButtonPressed == "WorkingPile" ){
+
+            // Makes sure there are cards in the working pile to be selected
+            if ( WorkingPile.toArray().length > 0 ){
+                TextView WorkingPileSelected = findViewById(R.id.WorkingPileSelected);
+
+                // If no piles were selected
+                if ( ButtonOnePress == 0 ){
+                    ButtonOnePress = 2;
+                    WorkingPileSelected.setText("Selected");
+
+                    // If beehive was already selected
+                } else if ( ButtonOnePress == 1 ){
+                    ButtonOnePress = 2;
+                    WorkingPileSelected.setText("Selected");
+                    TextView BeehiveSelected = findViewById(R.id.BeehiveSelected);
+                    BeehiveSelected.setText("");
+
+                    // If unselecting working pile
+                } else if ( ButtonOnePress == 2){
+                    ButtonOnePress = 0;
+                    WorkingPileSelected.setText("");
+                }
+            }
+        } else if ( ButtonPressed == "Garden1"){
+            ButtonTwoPress = 1;
+        } else if ( ButtonPressed == "Garden2"){
+            ButtonTwoPress = 2;
+        } else if ( ButtonPressed == "Garden3"){
+            ButtonTwoPress = 3;
+        } else if ( ButtonPressed == "Garden4"){
+            ButtonTwoPress = 4;
+        } else if ( ButtonPressed == "Garden5"){
+            ButtonTwoPress = 5;
+        } else if ( ButtonPressed == "Garden6"){
+            ButtonTwoPress = 6;
+        }
+    }
+
+    // Handles the logic that the flower garden slots take
+    public void GardenLogic(){
+
+        // If or beehive has been selected be able to do this logic
+        if ( ButtonOnePress == 1 ){
+
+            // If garden 1 was selected
+            if ( ButtonTwoPress == 1 ){
+                // If the two cards are sets
+                if ( Beehive.get(Beehive.toArray().length-1) %100 == FlowerGarden1.get(0) %100  ){
+                    FlowerGarden1.add(Beehive.get(Beehive.toArray().length-1));
+                    Beehive.remove(Beehive.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 1 is a set of 4
+                    if ( FlowerGarden1.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden1.clear();
+                        setGarden("Garden1");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden1");
+                    setText("Garden1");
+                    GameLose = false;
+                }
+
+                // If Garden 2 was selected
+            } else if ( ButtonTwoPress == 2 ){
+                // If the two cards are sets
+                if ( Beehive.get(Beehive.toArray().length-1) %100 == FlowerGarden2.get(0) %100  ){
+                    FlowerGarden2.add(Beehive.get(Beehive.toArray().length-1));
+                    Beehive.remove(Beehive.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 2 is a set of 4
+                    if ( FlowerGarden2.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden2.clear();
+                        setGarden("Garden2");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden2");
+                    setText("Garden2");
+                    GameLose = false;
+                }
+
+                // If Garden 3 was selected
+            } else if ( ButtonTwoPress == 3 ){
+                // If the two cards are sets
+                if ( Beehive.get(Beehive.toArray().length-1) %100 == FlowerGarden3.get(0) %100  ){
+                    FlowerGarden3.add(Beehive.get(Beehive.toArray().length-1));
+                    Beehive.remove(Beehive.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 3 is a set of 4
+                    if ( FlowerGarden3.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden3.clear();
+                        setGarden("Garden3");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden3");
+                    setText("Garden3");
+                    GameLose = false;
+                }
+
+                // If Garden 4 was selected
+            } else if ( ButtonTwoPress == 4 ){
+                // If the two cards are sets
+                if ( Beehive.get(Beehive.toArray().length-1) %100 == FlowerGarden4.get(0) %100  ){
+                    FlowerGarden4.add(Beehive.get(Beehive.toArray().length-1));
+                    Beehive.remove(Beehive.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 4 is a set of 4
+                    if ( FlowerGarden4.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden4.clear();
+                        setGarden("Garden4");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden4");
+                    setText("Garden4");
+                    GameLose = false;
+                }
+
+                // If Garden 5 was selected
+            } else if ( ButtonTwoPress == 5 ){
+                // If the two cards are sets
+                if ( Beehive.get(Beehive.toArray().length-1) %100 == FlowerGarden5.get(0) %100  ){
+                    FlowerGarden5.add(Beehive.get(Beehive.toArray().length-1));
+                    Beehive.remove(Beehive.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 5 is a set of 4
+                    if ( FlowerGarden5.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden5.clear();
+                        setGarden("Garden5");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden5");
+                    setText("Garden5");
+                    GameLose = false;
+                }
+
+                // If Garden 6 was selected
+            } else if ( ButtonTwoPress == 6 ){
+                // If the two cards are sets
+                if ( Beehive.get(Beehive.toArray().length-1) %100 == FlowerGarden6.get(0) %100  ){
+                    FlowerGarden6.add(Beehive.get(Beehive.toArray().length-1));
+                    Beehive.remove(Beehive.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 6 is a set of 4
+                    if ( FlowerGarden6.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden6.clear();
+                        setGarden("Garden6");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden6");
+                    setText("Garden6");
+                    GameLose = false;
+                }
+            }
+            // If the working pile was selected
+        } else if ( ButtonOnePress == 2 ){
+
+            // If garden 1 was selected
+            if ( ButtonTwoPress == 1 ){
+                // If the two cards are sets
+                if ( WorkingPile.get(WorkingPile.toArray().length-1) %100 == FlowerGarden1.get(0) %100  ){
+                    FlowerGarden1.add(WorkingPile.get(WorkingPile.toArray().length-1));
+                    WorkingPile.remove(WorkingPile.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 1 is a set of 4
+                    if ( FlowerGarden1.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden1.clear();
+                        setGarden("Garden1");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden1");
+                    setText("Garden1");
+                    GameLose = false;
+                }
+
+                // If Garden 2 was selected
+            } else if ( ButtonTwoPress == 2 ){
+                // If the two cards are sets
+                if ( WorkingPile.get(WorkingPile.toArray().length-1) %100 == FlowerGarden2.get(0) %100  ){
+                    FlowerGarden2.add(WorkingPile.get(WorkingPile.toArray().length-1));
+                    WorkingPile.remove(WorkingPile.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 2 is a set of 4
+                    if ( FlowerGarden2.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden2.clear();
+                        setGarden("Garden2");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden2");
+                    setText("Garden2");
+                    GameLose = false;
+                }
+
+                // If Garden 3 was selected
+            } else if ( ButtonTwoPress == 3 ){
+                // If the two cards are sets
+                if ( WorkingPile.get(WorkingPile.toArray().length-1) %100 == FlowerGarden3.get(0) %100  ){
+                    FlowerGarden3.add(WorkingPile.get(WorkingPile.toArray().length-1));
+                    WorkingPile.remove(WorkingPile.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 3 is a set of 4
+                    if ( FlowerGarden3.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden3.clear();
+                        setGarden("Garden3");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden3");
+                    setText("Garden3");
+                    GameLose = false;
+                }
+
+                // If Garden 4 was selected
+            } else if ( ButtonTwoPress == 4 ){
+                // If the two cards are sets
+                if ( WorkingPile.get(WorkingPile.toArray().length-1) %100 == FlowerGarden4.get(0) %100  ){
+                    FlowerGarden4.add(WorkingPile.get(WorkingPile.toArray().length-1));
+                    WorkingPile.remove(WorkingPile.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 4 is a set of 4
+                    if ( FlowerGarden4.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden4.clear();
+                        setGarden("Garden4");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden4");
+                    setText("Garden4");
+                    GameLose = false;
+                }
+
+                // If Garden 5 was selected
+            } else if ( ButtonTwoPress == 5 ){
+                // If the two cards are sets
+                if ( WorkingPile.get(WorkingPile.toArray().length-1) %100 == FlowerGarden5.get(0) %100  ){
+                    FlowerGarden5.add(WorkingPile.get(WorkingPile.toArray().length-1));
+                    WorkingPile.remove(WorkingPile.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 5 is a set of 4
+                    if ( FlowerGarden5.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden5.clear();
+                        setGarden("Garden5");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden5");
+                    setText("Garden5");
+                    GameLose = false;
+                }
+
+                // If Garden 6 was selected
+            } else if ( ButtonTwoPress == 6 ){
+                // If the two cards are sets
+                if ( WorkingPile.get(WorkingPile.toArray().length-1) %100 == FlowerGarden6.get(0) %100  ){
+                    FlowerGarden6.add(WorkingPile.get(WorkingPile.toArray().length-1));
+                    WorkingPile.remove(WorkingPile.toArray().length-1);
+                    setCard("Beehive");
+                    setText("Beehive");
+
+                    // If garden 6 is a set of 4
+                    if ( FlowerGarden6.toArray().length == 4 ){
+                        CompletedSets++;
+                        TextView CompletedSetsText = findViewById(R.id.CompletedSets);
+                        CompletedSetsText.setText("Completed Sets: " + CompletedSets);
+                        FlowerGarden6.clear();
+                        setGarden("Garden6");
+                        checkGarden();
+                        isWin();
+                    }
+                    setCard("Garden6");
+                    setText("Garden6");
+                    GameLose = false;
+                }
+            }
+        }
+
+        WorkingPile.trimToSize();
+        Beehive.trimToSize();
+        ButtonTwoPress = 0;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,6 +999,101 @@ public class MainActivity extends AppCompatActivity {
         DeckArray = randomizeDeck(DeckArray);
         Deck = IntArrayToList(DeckArray);
         setBoard();
-    }
 
+        // When the player wants to draw more for working pile
+        ImageButton DeckButton = findViewById(R.id.DeckButton);
+        DeckButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pullDeck();
+            }
+        });
+
+        // When the player decides to select the beehive
+        ImageButton BeehiveButton = findViewById(R.id.BeehiveButton);
+        BeehiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSelected("Beehive");
+            }
+        });
+
+        // When the player decides to select the working pile
+        ImageButton WorkingPileButton = findViewById(R.id.WorkingPileButton);
+        WorkingPileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSelected("WorkingPile");
+            }
+        });
+
+        // When the player decides to select the garden 1
+        ImageButton Garden1 = findViewById(R.id.Garden1);
+        Garden1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ButtonTwoPress = 1;
+                setSelected("Garden1");
+                GardenLogic();
+            }
+        });
+
+        // When the player decides to select the garden 2
+        ImageButton Garden2 = findViewById(R.id.Garden2);
+        Garden2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ButtonTwoPress = 2;
+                setSelected("Garden2");
+                GardenLogic();
+            }
+        });
+
+        // When the player decides to select the garden 3
+        ImageButton Garden3 = findViewById(R.id.Garden3);
+        Garden3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ButtonTwoPress = 3;
+                setSelected("Garden3");
+                GardenLogic();
+            }
+        });
+
+        // When the player decides to select the garden 4
+        ImageButton Garden4 = findViewById(R.id.Garden4);
+        Garden4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ButtonTwoPress = 4;
+                setSelected("Garden4");
+                GardenLogic();
+            }
+        });
+
+        // When the player decides to select the garden 5
+        ImageButton Garden5 = findViewById(R.id.Garden5);
+        Garden5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ButtonTwoPress = 5;
+                setSelected("Garden5");
+                GardenLogic();
+            }
+        });
+
+        // When the player decides to select the garden 6
+        ImageButton Garden6 = findViewById(R.id.Garden6);
+        Garden6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ButtonTwoPress = 6;
+                setSelected("Garden6");
+                GardenLogic();
+            }
+        });
+
+
+
+    }
 }
